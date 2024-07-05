@@ -1,0 +1,23 @@
+{
+  "files": {
+    "main.css": "/accessibility-audit-tool/static/css/main.8c8b27cf.chunk.css",
+    "main.js": "/accessibility-audit-tool/static/js/main.45e7739c.chunk.js",
+    "main.js.map": "/accessibility-audit-tool/static/js/main.45e7739c.chunk.js.map",
+    "runtime-main.js": "/accessibility-audit-tool/static/js/runtime-main.ac201690.js",
+    "runtime-main.js.map": "/accessibility-audit-tool/static/js/runtime-main.ac201690.js.map",
+    "static/js/2.a477c87d.chunk.js": "/accessibility-audit-tool/static/js/2.a477c87d.chunk.js",
+    "static/js/2.a477c87d.chunk.js.map": "/accessibility-audit-tool/static/js/2.a477c87d.chunk.js.map",
+    "static/js/3.743ec608.chunk.js": "/accessibility-audit-tool/static/js/3.743ec608.chunk.js",
+    "static/js/3.743ec608.chunk.js.map": "/accessibility-audit-tool/static/js/3.743ec608.chunk.js.map",
+    "index.html": "/accessibility-audit-tool/index.html",
+    "static/css/main.8c8b27cf.chunk.css.map": "/accessibility-audit-tool/static/css/main.8c8b27cf.chunk.css.map",
+    "static/js/2.a477c87d.chunk.js.LICENSE.txt": "/accessibility-audit-tool/static/js/2.a477c87d.chunk.js.LICENSE.txt",
+    "static/media/logo.6ce24c58.svg": "/accessibility-audit-tool/static/media/logo.6ce24c58.svg"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.ac201690.js",
+    "static/js/2.a477c87d.chunk.js",
+    "static/css/main.8c8b27cf.chunk.css",
+    "static/js/main.45e7739c.chunk.js"
+  ]
+}
