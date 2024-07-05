@@ -8,11 +8,19 @@ function App() {
   const [loading, setLoading] = useState(false);
   const [reportUrl, setReportUrl] = useState(null);
 
+  const normalizeUrl = (url) => {
+    if (!/^https?:\/\//i.test(url)) {
+      return 'http://' + url;
+    }
+    return url;
+  };
+
   const handleAudit = async () => {
     setLoading(true);
     setReportUrl(null);
     try {
-      const response = await axios.post('http://localhost:5000/api/audit', { url, name });
+      const normalizedUrl = normalizeUrl(url);
+      const response = await axios.post('http://localhost:5000/api/audit', { url: normalizedUrl, name });
       setReportUrl(response.data.reportUrl);
     } catch (error) {
       console.error(error);

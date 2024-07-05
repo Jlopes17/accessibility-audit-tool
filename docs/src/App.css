@@ -1,6 +1,6 @@
 body {
-  font-family: Arial, sans-serif;
-  background-color: #f8f9fa;
+  font-family: 'Roboto', sans-serif;
+  background-color: #f0f2f5;
   margin: 0;
   padding: 0;
   display: flex;
@@ -12,9 +12,10 @@ body {
 .App {
   background: #fff;
   padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  width: 300px;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  width: 400px;
+  text-align: center;
 }
 
 .App h1 {
@@ -30,13 +31,15 @@ body {
   display: block;
   margin-bottom: 5px;
   font-weight: bold;
+  text-align: left;
 }
 
 .form-group input {
   width: 100%;
-  padding: 8px;
+  padding: 10px;
   border: 1px solid #ced4da;
-  border-radius: 4px;
+  border-radius: 5px;
+  box-sizing: border-box;
 }
 
 button {
@@ -45,9 +48,10 @@ button {
   background-color: #007bff;
   color: white;
   border: none;
-  border-radius: 4px;
+  border-radius: 5px;
   cursor: pointer;
   font-size: 16px;
+  transition: background-color 0.3s ease;
 }
 
 button:disabled {
@@ -57,4 +61,14 @@ button:disabled {
 .report {
   margin-top: 20px;
   font-weight: bold;
+}
+
+.report a {
+  text-decoration: none;
+  color: #007bff;
+  transition: color 0.3s ease;
+}
+
+.report a:hover {
+  color: #0056b3;
 }

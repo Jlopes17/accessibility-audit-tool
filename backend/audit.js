@@ -42,9 +42,28 @@ const generatePDF = (results, name, pdfPath) => {
     const writeStream = fs.createWriteStream(pdfPath);
 
     doc.pipe(writeStream);
-    doc.text(`Accessibility Audit Report for ${name}`, { align: 'center' });
+    doc.fontSize(20).text(`Accessibility Audit Report for ${name}`, { align: 'center' });
     doc.moveDown();
-    doc.text(JSON.stringify(results, null, 2));
+    doc.fontSize(12);
+
+    results.violations.forEach((violation, index) => {
+      doc.text(`${index + 1}. ${violation.description}`, { underline: true });
+      doc.text(`Impact: ${violation.impact}`);
+      doc.text(`Help: ${violation.help}`);
+      doc.moveDown();
+      doc.text('Issues:', { bold: true });
+      violation.nodes.forEach((node, nodeIndex) => {
+        doc.text(` ${nodeIndex + 1}. ${node.failureSummary}`);
+        doc.text(` Element: ${node.target.join(', ')}`);
+        doc.text(` Snippet: ${node.html}`);
+        doc.moveDown();
+        doc.text('How to solve:', { italic: true });
+        doc.text(node.any.map((item) => item.message).join('\n'));
+        doc.moveDown();
+      });
+      doc.moveDown();
+    });
+
     doc.end();
 
     writeStream.on('finish', resolve);
