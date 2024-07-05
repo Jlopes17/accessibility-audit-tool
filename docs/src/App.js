@@ -12,7 +12,7 @@ function App() {
     setLoading(true);
     setReportUrl(null);
     try {
-      const response = await axios.post('/api/audit', { url, name });
+      const response = await axios.post('http://localhost:5000/api/audit', { url, name });
       setReportUrl(response.data.reportUrl);
     } catch (error) {
       console.error(error);
