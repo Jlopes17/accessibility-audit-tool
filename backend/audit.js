@@ -70,27 +70,38 @@ const generatePDF = (results, url, pdfPath) => {
 
     doc.pipe(writeStream);
 
-    // Title
-    doc.fontSize(20).text(`Accessibility Audit Report for ${websiteName}`, { align: 'center' });
-    doc.moveDown(2);
+    // Title Section
+    doc
+      .rect(40, 40, 515, 200)
+      .fill('#2E3B55')
+      .stroke()
+      .fillColor('#ffffff')
+      .fontSize(26)
+      .text(`Scan results for ${websiteName}`, { align: 'center' })
+      .moveDown(1.5)
+      .fontSize(20)
+      .text(`Compliant`, { align: 'center' })
+      .moveDown(1)
+      .fontSize(12)
+      .text(`Great news! Based on our scan, your webpage is accessible and conforms with WCAG standards.`, { align: 'center' })
+      .moveDown(1.5);
 
-    // Detailed Violations
+    // Detailed Violations Section
     results.violations.forEach((violation, index) => {
       doc
-        .rect(doc.x, doc.y, doc.page.width - doc.page.margins.left - doc.page.margins.right, 150)
+        .moveDown(1.5)
+        .rect(40, doc.y, 515, 180)
         .fill('#f5f5f5')
-        .stroke();
-
-      doc
+        .stroke()
         .fillColor('#000000')
         .fontSize(16)
-        .text(`${index + 1}. ${violation.description}`, { underline: true, continued: true })
+        .text(`${index + 1}. ${violation.description}`, { underline: true })
         .fontSize(12)
-        .text(` (Impact: ${violation.impact})`, { align: 'right', continued: false });
-
-      doc.moveDown();
-      doc.fontSize(12).text(`Help: ${violation.help}`);
-      doc.moveDown();
+        .moveDown(0.5)
+        .text(`Impact: ${violation.impact}`)
+        .moveDown(0.5)
+        .text(`Help: ${violation.help}`)
+        .moveDown(1);
 
       violation.nodes.forEach((node, nodeIndex) => {
         doc.fontSize(14).fillColor('#000').text(`Issue ${nodeIndex + 1}:`, { underline: true });
