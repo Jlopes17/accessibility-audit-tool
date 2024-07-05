@@ -38,7 +38,7 @@ app.post('/api/audit', async (req, res) => {
 
 const generatePDF = (results, name, pdfPath) => {
   return new Promise((resolve, reject) => {
-    const doc = new PDFDocument();
+    const doc = new PDFDocument({ size: 'A4', margin: 40 });
     const writeStream = fs.createWriteStream(pdfPath);
 
     doc.pipe(writeStream);
@@ -47,15 +47,15 @@ const generatePDF = (results, name, pdfPath) => {
     doc.fontSize(12);
 
     results.violations.forEach((violation, index) => {
-      doc.text(`${index + 1}. ${violation.description}`, { underline: true });
-      doc.text(`Impact: ${violation.impact}`);
+      doc.fontSize(16).text(`${index + 1}. ${violation.description}`, { underline: true });
+      doc.fontSize(12).text(`Impact: ${violation.impact}`);
       doc.text(`Help: ${violation.help}`);
       doc.moveDown();
       doc.text('Issues:', { bold: true });
       violation.nodes.forEach((node, nodeIndex) => {
-        doc.text(` ${nodeIndex + 1}. ${node.failureSummary}`);
-        doc.text(` Element: ${node.target.join(', ')}`);
-        doc.text(` Snippet: ${node.html}`);
+        doc.fontSize(12).text(`  ${nodeIndex + 1}. ${node.failureSummary}`);
+        doc.text(`  Element: ${node.target.join(', ')}`);
+        doc.text(`  Snippet: ${node.html}`);
         doc.moveDown();
         doc.text('How to solve:', { italic: true });
         doc.text(node.any.map((item) => item.message).join('\n'));

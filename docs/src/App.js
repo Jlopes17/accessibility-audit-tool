@@ -56,7 +56,7 @@ function App() {
       </button>
       {reportUrl && (
         <div className="report">
-          <a href={reportUrl} download="accessibility_report.pdf">Download Report</a>
+          <a href={reportUrl} target="_blank" rel="noopener noreferrer">Open Report</a>
         </div>
       )}
     </div>
