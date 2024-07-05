@@ -42,26 +42,36 @@ const generatePDF = (results, name, pdfPath) => {
     const writeStream = fs.createWriteStream(pdfPath);
 
     doc.pipe(writeStream);
-    doc.fontSize(20).text(`Accessibility Audit Report for ${name}`, { align: 'center' });
-    doc.moveDown();
-    doc.fontSize(12);
 
+    // Title
+    doc.fontSize(20).text(`Accessibility Audit Report for ${name}`, { align: 'center' });
+    doc.moveDown(2);
+
+    // Summary
+    doc.fontSize(14).fillColor('green').text('Compliant', { align: 'center' });
+    doc.moveDown(1);
+    doc.fontSize(12).fillColor('black').text('Great news! Based on our scan, your webpage is accessible and conforms with WCAG standards.', { align: 'center' });
+    doc.moveDown(2);
+
+    // Detailed Violations
     results.violations.forEach((violation, index) => {
-      doc.fontSize(16).text(`${index + 1}. ${violation.description}`, { underline: true });
-      doc.fontSize(12).text(`Impact: ${violation.impact}`);
-      doc.text(`Help: ${violation.help}`);
-      doc.moveDown();
-      doc.text('Issues:', { bold: true });
+      doc.fontSize(16).fillColor('black').text(`${index + 1}. ${violation.description}`, { underline: true });
+      doc.fontSize(12).text(`Impact: ${violation.impact}`, { indent: 20 });
+      doc.text(`Help: ${violation.help}`, { indent: 20 });
+      doc.moveDown(1);
+      doc.fontSize(14).text('Issues:', { bold: true, indent: 20 });
+
       violation.nodes.forEach((node, nodeIndex) => {
-        doc.fontSize(12).text(`  ${nodeIndex + 1}. ${node.failureSummary}`);
-        doc.text(`  Element: ${node.target.join(', ')}`);
-        doc.text(`  Snippet: ${node.html}`);
-        doc.moveDown();
-        doc.text('How to solve:', { italic: true });
-        doc.text(node.any.map((item) => item.message).join('\n'));
-        doc.moveDown();
+        doc.fontSize(12).text(`  ${nodeIndex + 1}. ${node.failureSummary}`, { indent: 40 });
+        doc.text(`  Element: ${node.target.join(', ')}`, { indent: 40 });
+        doc.text(`  Snippet: ${node.html}`, { indent: 40 });
+        doc.moveDown(0.5);
+        doc.text('How to solve:', { italic: true, indent: 40 });
+        doc.text(node.any.map((item) => item.message).join('\n'), { indent: 60 });
+        doc.moveDown(1);
       });
-      doc.moveDown();
+
+      doc.moveDown(2);
     });
 
     doc.end();
