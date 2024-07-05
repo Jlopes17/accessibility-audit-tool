@@ -72,54 +72,63 @@ const generatePDF = (results, url, pdfPath) => {
 
     // Title Section
     doc
-      .rect(40, 40, 515, 200)
+      .rect(40, 40, 515, 100)
       .fill('#2E3B55')
       .stroke()
       .fillColor('#ffffff')
       .fontSize(26)
-      .text(`Scan results for ${websiteName}`, { align: 'center' })
-      .moveDown(1.5)
+      .text(`Scan results for ${websiteName}`, 50, 50, { align: 'center', width: 495 })
+      .moveDown(1)
       .fontSize(20)
       .text(`Compliant`, { align: 'center' })
       .moveDown(1)
       .fontSize(12)
-      .text(`Great news! Based on our scan, your webpage is accessible and conforms with WCAG standards.`, { align: 'center' })
-      .moveDown(1.5);
+      .text(`Great news! Based on our scan, your webpage is accessible and conforms with WCAG standards.`, { align: 'center', width: 495 });
+
+    doc.moveDown(2);
 
     // Detailed Violations Section
     results.violations.forEach((violation, index) => {
       doc
         .moveDown(1.5)
-        .rect(40, doc.y, 515, 180)
+        .rect(40, doc.y, 515, 150)
         .fill('#f5f5f5')
         .stroke()
         .fillColor('#000000')
         .fontSize(16)
-        .text(`${index + 1}. ${violation.description}`, { underline: true })
+        .text(`${index + 1}. ${violation.description}`, 50, doc.y + 10, { underline: true, width: 495 })
         .fontSize(12)
         .moveDown(0.5)
-        .text(`Impact: ${violation.impact}`)
+        .text(`Impact: ${violation.impact}`, { width: 495 })
         .moveDown(0.5)
-        .text(`Help: ${violation.help}`)
+        .text(`Help: ${violation.help}`, { width: 495 })
         .moveDown(1);
 
       violation.nodes.forEach((node, nodeIndex) => {
-        doc.fontSize(14).fillColor('#000').text(`Issue ${nodeIndex + 1}:`, { underline: true });
-        doc.fontSize(12).fillColor('#000').text(`Element: ${node.target.join(', ')}`);
-        doc.moveDown(0.5);
-        doc.fillColor('#000').text(`Snippet: ${node.html}`);
-        doc.moveDown(0.5);
+        doc
+          .fontSize(14)
+          .fillColor('#000')
+          .text(`Issue ${nodeIndex + 1}:`, { underline: true, width: 495 })
+          .fontSize(12)
+          .fillColor('#000')
+          .text(`Element: ${node.target.join(', ')}`, { width: 495 })
+          .moveDown(0.5)
+          .fillColor('#000')
+          .text(`Snippet: ${node.html}`, { width: 495 })
+          .moveDown(0.5)
+          .fontSize(12)
+          .fillColor('#000')
+          .text('How to solve:', { bold: true, width: 495 });
 
-        doc.fontSize(12).fillColor('#000').text('How to solve:', { bold: true });
         node.any.forEach((item, itemIndex) => {
-          doc.fontSize(12).fillColor('#000').text(`${itemIndex + 1}. ${item.message}`);
+          doc.fontSize(12).fillColor('#000').text(`${itemIndex + 1}. ${item.message}`, { width: 495 });
         });
 
         const codeSnippet = generateCodeSnippet(violation);
         if (codeSnippet) {
           doc.moveDown(0.5);
-          doc.fontSize(12).fillColor('#000').text('Example fix:', { bold: true });
-          doc.fontSize(12).fillColor('#000').text(codeSnippet, { indent: 40 });
+          doc.fontSize(12).fillColor('#000').text('Example fix:', { bold: true, width: 495 });
+          doc.fontSize(12).fillColor('#000').text(codeSnippet, { indent: 40, width: 495 });
         }
 
         doc.moveDown();
