@@ -24,7 +24,13 @@ jobs:
       - name: Build the project
         env:
           NODE_OPTIONS: '--openssl-legacy-provider'
-        run: npm run build
+        run: |
+          echo "Building the project..."
+          npm run build
+
+      - name: Capture Build Logs
+        if: failure()
+        run: cat ./build/logs.txt
 
       - name: Deploy to GitHub Pages
         env:
