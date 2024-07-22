@@ -2,6 +2,8 @@ const express = require('express');
 const cors = require('cors');
 const puppeteer = require('puppeteer');
 const { AxePuppeteer } = require('axe-puppeteer');
+const lighthouse = require('lighthouse');
+const chromeLauncher = require('chrome-launcher');
 const PDFDocument = require('pdfkit');
 const fs = require('fs');
 const path = require('path');
@@ -25,11 +27,13 @@ app.post('/api/audit', async (req, res) => {
     const page = await browser.newPage();
     await page.goto(url);
 
-    const results = await new AxePuppeteer(page).analyze();
+    const axeResults = await new AxePuppeteer(page).analyze();
+    const lighthouseResults = await runLighthouseAudit(url);
+
     await browser.close();
 
     const pdfPath = path.join(__dirname, `report_${Date.now()}.pdf`);
-    await generatePDF(results, url, pdfPath);
+    await generatePDF(axeResults, lighthouseResults, url, pdfPath);
 
     res.json({ reportUrl: `http://localhost:${PORT}/reports/${path.basename(pdfPath)}` });
   } catch (error) {
@@ -37,10 +41,23 @@ app.post('/api/audit', async (req, res) => {
   }
 });
 
+const runLighthouseAudit = async (url) => {
+  const chrome = await chromeLauncher.launch({ chromeFlags: ['--headless'] });
+  const options = { logLevel: 'info', output: 'json', onlyCategories: ['accessibility'], port: chrome.port };
+  const runnerResult = await lighthouse(url, options);
+
+  await chrome.kill();
+
+  return runnerResult.lhr;
+};
+
 const generateCodeSnippet = (violation) => {
   let codeSnippet = '';
 
   switch (violation.id) {
+    case 'aria-roles':
+      codeSnippet = '/* Ensure the ARIA role is appropriate for the element */\n<aside role="complementary" class="cookie-consent-bar-overlay fade-fast-enter-active fadefast-enter-to">';
+      break;
     case 'color-contrast':
       codeSnippet = '/* Ensure sufficient color contrast */\n.element {\n  color: #000000;\n  background-color: #FFFFFF;\n}';
       break;
@@ -61,7 +78,7 @@ const generateCodeSnippet = (violation) => {
   return codeSnippet;
 };
 
-const generatePDF = (results, url, pdfPath) => {
+const generatePDF = (axeResults, lighthouseResults, url, pdfPath) => {
   return new Promise((resolve, reject) => {
     const doc = new PDFDocument({ size: 'A4', margin: 40 });
     const writeStream = fs.createWriteStream(pdfPath);
@@ -72,7 +89,7 @@ const generatePDF = (results, url, pdfPath) => {
 
     // Title Section
     doc
-      .rect(40, 40, 515, 150)
+      .rect(40, 40, 515, 100)
       .fill('#2E3B55')
       .stroke()
       .fillColor('#ffffff')
@@ -83,13 +100,13 @@ const generatePDF = (results, url, pdfPath) => {
       .text(`Compliant`, { align: 'center' })
       .moveDown(1)
       .fontSize(12)
-      .text(`Great news! Based on our scan, your webpage is accessible and conforms with WCAG standards.`, { align: 'center', width: 495 })
-      .moveDown(1);
+      .text(`Great news! Based on our scan, your webpage is accessible and conforms with WCAG standards.`, { align: 'center', width: 495 });
 
     doc.moveDown(2);
 
-    // Detailed Violations Section
-    results.violations.forEach((violation, index) => {
+    // Axe Results Section
+    doc.fontSize(18).text('Axe Accessibility Violations', { underline: true });
+    axeResults.violations.forEach((violation, index) => {
       doc
         .moveDown(1.5)
         .roundedRect(40, doc.y, 515, 180, 10)
@@ -136,6 +153,30 @@ const generatePDF = (results, url, pdfPath) => {
       });
 
       doc.moveDown(2);
+    });
+
+    // Lighthouse Results Section
+    doc.fontSize(18).text('Lighthouse Accessibility Scores', { underline: true });
+    const accessibilityScore = lighthouseResults.categories.accessibility.score * 100;
+    doc.fontSize(16).text(`Overall Accessibility Score: ${accessibilityScore}`, { width: 495 });
+    doc.moveDown(1.5);
+
+    lighthouseResults.audits.forEach((audit) => {
+      if (audit.score !== 1) {
+        doc
+          .moveDown(1.5)
+          .roundedRect(40, doc.y, 515, 100, 10)
+          .fill('#f5f5f5')
+          .stroke()
+          .fillColor('#000000')
+          .fontSize(16)
+          .text(audit.title, 50, doc.y + 10, { underline: true, width: 495 })
+          .fontSize(12)
+          .moveDown(0.5)
+          .text(`Description: ${audit.description}`, { width: 495 })
+          .moveDown(0.5)
+          .text(`Score: ${audit.score * 100}`, { width: 495 });
+      }
     });
 
     doc.end();
