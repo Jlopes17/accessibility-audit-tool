@@ -1,20 +1,20 @@
 {
   "files": {
     "main.css": "/accessibility-audit-tool/static/css/main.2a8856f0.chunk.css",
-    "main.js": "/accessibility-audit-tool/static/js/main.57d79f02.chunk.js",
-    "main.js.map": "/accessibility-audit-tool/static/js/main.57d79f02.chunk.js.map",
-    "runtime-main.js": "/accessibility-audit-tool/static/js/runtime-main.36f04676.js",
-    "runtime-main.js.map": "/accessibility-audit-tool/static/js/runtime-main.36f04676.js.map",
-    "static/js/2.78bd3b4b.chunk.js": "/accessibility-audit-tool/static/js/2.78bd3b4b.chunk.js",
-    "static/js/2.78bd3b4b.chunk.js.map": "/accessibility-audit-tool/static/js/2.78bd3b4b.chunk.js.map",
+    "main.js": "/accessibility-audit-tool/static/js/main.fbe57449.chunk.js",
+    "main.js.map": "/accessibility-audit-tool/static/js/main.fbe57449.chunk.js.map",
+    "runtime-main.js": "/accessibility-audit-tool/static/js/runtime-main.6c7619ac.js",
+    "runtime-main.js.map": "/accessibility-audit-tool/static/js/runtime-main.6c7619ac.js.map",
+    "static/js/2.cdb071fb.chunk.js": "/accessibility-audit-tool/static/js/2.cdb071fb.chunk.js",
+    "static/js/2.cdb071fb.chunk.js.map": "/accessibility-audit-tool/static/js/2.cdb071fb.chunk.js.map",
     "index.html": "/accessibility-audit-tool/index.html",
     "static/css/main.2a8856f0.chunk.css.map": "/accessibility-audit-tool/static/css/main.2a8856f0.chunk.css.map",
-    "static/js/2.78bd3b4b.chunk.js.LICENSE.txt": "/accessibility-audit-tool/static/js/2.78bd3b4b.chunk.js.LICENSE.txt"
+    "static/js/2.cdb071fb.chunk.js.LICENSE.txt": "/accessibility-audit-tool/static/js/2.cdb071fb.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
-    "static/js/runtime-main.36f04676.js",
-    "static/js/2.78bd3b4b.chunk.js",
+    "static/js/runtime-main.6c7619ac.js",
+    "static/js/2.cdb071fb.chunk.js",
     "static/css/main.2a8856f0.chunk.css",
-    "static/js/main.57d79f02.chunk.js"
+    "static/js/main.fbe57449.chunk.js"
   ]
 }
