@@ -2,8 +2,6 @@ const express = require('express');
 const cors = require('cors');
 const puppeteer = require('puppeteer');
 const { AxePuppeteer } = require('axe-puppeteer');
-const lighthouse = require('lighthouse');
-const chromeLauncher = require('chrome-launcher');
 const PDFDocument = require('pdfkit');
 const fs = require('fs');
 const path = require('path');
@@ -42,9 +40,11 @@ app.post('/api/audit', async (req, res) => {
 });
 
 const runLighthouseAudit = async (url) => {
+  const lighthouse = await import('lighthouse');
+  const chromeLauncher = await import('chrome-launcher');
   const chrome = await chromeLauncher.launch({ chromeFlags: ['--headless'] });
   const options = { logLevel: 'info', output: 'json', onlyCategories: ['accessibility'], port: chrome.port };
-  const runnerResult = await lighthouse(url, options);
+  const runnerResult = await lighthouse.default(url, options);
 
   await chrome.kill();
 
@@ -161,7 +161,7 @@ const generatePDF = (axeResults, lighthouseResults, url, pdfPath) => {
     doc.fontSize(16).text(`Overall Accessibility Score: ${accessibilityScore}`, { width: 495 });
     doc.moveDown(1.5);
 
-    lighthouseResults.audits.forEach((audit) => {
+    Object.values(lighthouseResults.audits).forEach((audit) => {
       if (audit.score !== 1) {
         doc
           .moveDown(1.5)
