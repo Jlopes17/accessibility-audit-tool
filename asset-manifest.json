@@ -1,6 +1,6 @@
 {
   "files": {
-    "main.css": "/accessibility-audit-tool/static/css/main.cf790060.chunk.css",
+    "main.css": "/accessibility-audit-tool/static/css/main.2a8856f0.chunk.css",
     "main.js": "/accessibility-audit-tool/static/js/main.e98a6cc0.chunk.js",
     "main.js.map": "/accessibility-audit-tool/static/js/main.e98a6cc0.chunk.js.map",
     "runtime-main.js": "/accessibility-audit-tool/static/js/runtime-main.36f04676.js",
@@ -8,13 +8,13 @@
     "static/js/2.5ee84a7d.chunk.js": "/accessibility-audit-tool/static/js/2.5ee84a7d.chunk.js",
     "static/js/2.5ee84a7d.chunk.js.map": "/accessibility-audit-tool/static/js/2.5ee84a7d.chunk.js.map",
     "index.html": "/accessibility-audit-tool/index.html",
-    "static/css/main.cf790060.chunk.css.map": "/accessibility-audit-tool/static/css/main.cf790060.chunk.css.map",
+    "static/css/main.2a8856f0.chunk.css.map": "/accessibility-audit-tool/static/css/main.2a8856f0.chunk.css.map",
     "static/js/2.5ee84a7d.chunk.js.LICENSE.txt": "/accessibility-audit-tool/static/js/2.5ee84a7d.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
     "static/js/runtime-main.36f04676.js",
     "static/js/2.5ee84a7d.chunk.js",
-    "static/css/main.cf790060.chunk.css",
+    "static/css/main.2a8856f0.chunk.css",
     "static/js/main.e98a6cc0.chunk.js"
   ]
 }
