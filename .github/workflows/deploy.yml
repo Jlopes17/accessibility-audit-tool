@@ -30,3 +30,12 @@ jobs:
         run: |
           npm install -g gh-pages
           npm run deploy
+
+      - name: Debug Node.js version
+        run: node -v
+
+      - name: Debug npm version
+        run: npm -v
+
+      - name: List files in build directory
+        run: ls -la build
