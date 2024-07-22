@@ -24,20 +24,12 @@ jobs:
       - name: Build the project
         env:
           NODE_OPTIONS: '--openssl-legacy-provider'
-        run: |
-          echo "Building the project..."
-          npm run build || echo "Build failed with exit code $?"
-
-      - name: Capture Build Logs
-        if: failure()
-        run: cat ./build/logs.txt || true
+        run: npm run build
 
       - name: Deploy to GitHub Pages
         env:
           NODE_OPTIONS: '--openssl-legacy-provider'
-        run: |
-          npm install -g gh-pages
-          npm run deploy
+        run: npm run deploy
 
       - name: Debug Node.js version
         run: node -v

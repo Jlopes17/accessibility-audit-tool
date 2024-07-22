@@ -26,5 +26,8 @@
     "express": "^4.19.2",
     "pdfkit": "^0.15.0",
     "puppeteer": "^22.12.1"
+  },
+  "devDependencies": {
+    "gh-pages": "^6.1.1"
   }
 }
