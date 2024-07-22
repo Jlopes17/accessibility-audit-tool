@@ -72,7 +72,7 @@ const generatePDF = (results, url, pdfPath) => {
 
     // Title Section
     doc
-      .rect(40, 40, 515, 100)
+      .rect(40, 40, 515, 150)
       .fill('#2E3B55')
       .stroke()
       .fillColor('#ffffff')
@@ -83,7 +83,8 @@ const generatePDF = (results, url, pdfPath) => {
       .text(`Compliant`, { align: 'center' })
       .moveDown(1)
       .fontSize(12)
-      .text(`Great news! Based on our scan, your webpage is accessible and conforms with WCAG standards.`, { align: 'center', width: 495 });
+      .text(`Great news! Based on our scan, your webpage is accessible and conforms with WCAG standards.`, { align: 'center', width: 495 })
+      .moveDown(1);
 
     doc.moveDown(2);
 
@@ -91,7 +92,7 @@ const generatePDF = (results, url, pdfPath) => {
     results.violations.forEach((violation, index) => {
       doc
         .moveDown(1.5)
-        .rect(40, doc.y, 515, 150)
+        .roundedRect(40, doc.y, 515, 180, 10)
         .fill('#f5f5f5')
         .stroke()
         .fillColor('#000000')

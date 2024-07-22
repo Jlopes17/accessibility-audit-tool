@@ -14,7 +14,7 @@
     "express": "^4.19.2",
     "nodemailer": "^6.9.14",
     "pdfkit": "^0.15.0",
-    "puppeteer": "^22.12.1"
+    "puppeteer": "^22.13.1"
   },
   "devDependencies": {
     "axios": "^1.7.2",
