@@ -30,7 +30,7 @@ app.post('/api/audit', async (req, res) => {
 
     await browser.close();
 
-    const pdfPath = path.join(__dirname, `report_${Date.now()}.pdf`);
+    const pdfPath = path.join(__dirname, `reports/report_${Date.now()}.pdf`);
     await generatePDF(axeResults, lighthouseResults, url, pdfPath);
 
     res.json({ reportUrl: `http://localhost:${PORT}/reports/${path.basename(pdfPath)}` });
@@ -213,7 +213,7 @@ const generatePDF = (axeResults, lighthouseResults, url, pdfPath) => {
   });
 };
 
-app.use('/reports', express.static(path.join(__dirname)));
+app.use('/reports', express.static(path.join(__dirname, 'reports')));
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
