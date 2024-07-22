@@ -96,8 +96,8 @@ const generatePDF = (axeResults, lighthouseResults, url, pdfPath) => {
 
     doc.pipe(writeStream);
 
-    // Background color
-    doc.rect(0, 0, doc.page.width, doc.page.height).fill('#05051e');
+    // Background color for all pages
+    doc.rect(0, 0, doc.page.width, doc.page.height).fill('#05051e').stroke();
 
     // Title Section
     doc
@@ -123,7 +123,7 @@ const generatePDF = (axeResults, lighthouseResults, url, pdfPath) => {
       .text('- Form labels', { align: 'center' })
       .text('- Link names', { align: 'center' });
 
-    doc.moveDown(2);
+    doc.addPage();
 
     // Axe Results Section
     doc
