@@ -1,4 +1,4 @@
-name: Deploy to GitHub Pages
+name: Build and Deploy
 
 on:
   push:
@@ -9,33 +9,29 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
+    strategy:
+      matrix:
+        node-version: [20]
+
     steps:
-      - name: Checkout code
+      - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Set up Node.js
+      - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v3
         with:
-          node-version: '20'
+          node-version: ${{ matrix.node-version }}
 
       - name: Install dependencies
         run: npm install
 
-      - name: Build the project
-        env:
-          NODE_OPTIONS: '--openssl-legacy-provider'
-        run: npm run build
+      - name: Build project
+        run: |
+          export NODE_OPTIONS=--openssl-legacy-provider
+          npm run build
 
       - name: Deploy to GitHub Pages
-        env:
-          NODE_OPTIONS: '--openssl-legacy-provider'
-        run: npm run deploy
-
-      - name: Debug Node.js version
-        run: node -v
-
-      - name: Debug npm version
-        run: npm -v
-
-      - name: List files in build directory
-        run: ls -la build || true
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./build
