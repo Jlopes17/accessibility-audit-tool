@@ -130,6 +130,7 @@ const generatePDF = (axeResults, lighthouseResults, url, pdfPath) => {
       .fontSize(18)
       .fillColor('#ffffff')
       .text('Axe Accessibility Violations', { underline: true });
+
     axeResults.violations.forEach((violation, index) => {
       doc
         .moveDown(1.5)
