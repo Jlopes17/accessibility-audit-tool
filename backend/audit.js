@@ -84,33 +84,57 @@ const generatePDF = (axeResults, lighthouseResults, url, pdfPath) => {
     const writeStream = fs.createWriteStream(pdfPath);
 
     const websiteName = urlParser.parse(url).hostname;
+    const axeViolations = axeResults.violations.length;
+    const lighthouseScore = lighthouseResults.categories.accessibility.score * 100;
+
+    let complianceStatus = 'Not Compliant';
+    if (lighthouseScore >= 90 && axeViolations === 0) {
+      complianceStatus = 'Compliant';
+    } else if (lighthouseScore >= 50) {
+      complianceStatus = 'Semi Compliant';
+    }
 
     doc.pipe(writeStream);
 
+    // Background color
+    doc.rect(0, 0, doc.page.width, doc.page.height).fill('#05051e');
+
     // Title Section
     doc
-      .rect(40, 40, 515, 100)
-      .fill('#2E3B55')
-      .stroke()
       .fillColor('#ffffff')
       .fontSize(26)
-      .text(`Scan results for ${websiteName}`, 50, 50, { align: 'center', width: 495 })
-      .moveDown(1)
+      .text('Dentsu Benelux Accessibility Audit', { align: 'center' })
+      .moveDown(1.5)
       .fontSize(20)
-      .text(`Compliant`, { align: 'center' })
+      .text(`Scan results for ${websiteName}`, { align: 'center' })
+      .moveDown(1)
+      .fontSize(16)
+      .text(`Compliance Status: ${complianceStatus}`, { align: 'center' })
+      .moveDown(1)
+      .text(`Overall Accessibility Score: ${lighthouseScore}`, { align: 'center' })
       .moveDown(1)
       .fontSize(12)
-      .text(`Great news! Based on our scan, your webpage is accessible and conforms with WCAG standards.`, { align: 'center', width: 495 });
+      .text('This report includes automatic accessibility checks using Axe and Lighthouse tools.', { align: 'center' })
+      .moveDown(1)
+      .text('Types of checks include:', { align: 'center' })
+      .text('- ARIA roles', { align: 'center' })
+      .text('- Color contrast', { align: 'center' })
+      .text('- Image alt text', { align: 'center' })
+      .text('- Form labels', { align: 'center' })
+      .text('- Link names', { align: 'center' });
 
     doc.moveDown(2);
 
     // Axe Results Section
-    doc.fontSize(18).text('Axe Accessibility Violations', { underline: true });
+    doc
+      .fontSize(18)
+      .fillColor('#ffffff')
+      .text('Axe Accessibility Violations', { underline: true });
     axeResults.violations.forEach((violation, index) => {
       doc
         .moveDown(1.5)
         .roundedRect(40, doc.y, 515, 180, 10)
-        .fill('#f5f5f5')
+        .fill('#aeaebc')
         .stroke()
         .fillColor('#000000')
         .fontSize(16)
@@ -156,9 +180,11 @@ const generatePDF = (axeResults, lighthouseResults, url, pdfPath) => {
     });
 
     // Lighthouse Results Section
-    doc.fontSize(18).text('Lighthouse Accessibility Scores', { underline: true });
-    const accessibilityScore = lighthouseResults.categories.accessibility.score * 100;
-    doc.fontSize(16).text(`Overall Accessibility Score: ${accessibilityScore}`, { width: 495 });
+    doc
+      .fontSize(18)
+      .fillColor('#ffffff')
+      .text('Lighthouse Accessibility Scores', { underline: true });
+    doc.fontSize(16).text(`Overall Accessibility Score: ${lighthouseScore}`, { width: 495 });
     doc.moveDown(1.5);
 
     Object.values(lighthouseResults.audits).forEach((audit) => {
@@ -166,7 +192,7 @@ const generatePDF = (axeResults, lighthouseResults, url, pdfPath) => {
         doc
           .moveDown(1.5)
           .roundedRect(40, doc.y, 515, 100, 10)
-          .fill('#f5f5f5')
+          .fill('#aeaebc')
           .stroke()
           .fillColor('#000000')
           .fontSize(16)
